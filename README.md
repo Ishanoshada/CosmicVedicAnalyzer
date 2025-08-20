@@ -194,7 +194,7 @@ sudo nano /etc/nginx/sites-available/cosmic-vedic
 server {
     listen 80;
     server_name cosmic.yourdomain.com;
-    
+    client_max_body_size 100M;
     location / {
         proxy_pass http://localhost:8989;
         proxy_set_header Host $host;
