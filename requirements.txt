@@ -4,3 +4,6 @@ pandas==2.2.2
 numpy
 swisseph
 scikit-learn
+ephem
+networkx
+scipy

@@ -131,6 +131,106 @@ Visit `http://localhost:5000` in your browser after starting the application.
 - Weighted by traditional astrological texts
 - Contextualized to event data patterns
 
+### 🐳 Docker Installation (Alternative)
+
+For containerized deployment:
+
+```bash
+# Clone repository
+git clone https://github.com/ishanoshada/CosmicVedicAnalyzer.git
+cd CosmicVedicAnalyzer
+
+# Build Docker image
+docker build -t cosmic-vedic-analyzer .
+
+# Run in background
+docker run -d -p 8989:8989 --name cosmic-vedic-app cosmic-vedic-analyzer
+```
+
+Visit `http://localhost:8989` in your browser after starting the container.
+
+**Docker Management Commands:**
+```bash
+# View logs
+docker logs cosmic-vedic-app
+
+# Stop container
+docker stop cosmic-vedic-app
+
+# Start container
+docker start cosmic-vedic-app
+
+# Remove container
+docker rm cosmic-vedic-app
+```
+
+## 🌐 Deployment Options
+
+### 🚀 VPS Deployment with Custom Domain
+
+For production deployment with custom subdomain:
+
+```bash
+# 1. Deploy on VPS with Docker
+docker stop cosmic-vedic-app
+docker rm cosmic-vedic-app
+
+# Run with updated configuration
+docker run -d -p 8989:8989 --name cosmic-vedic-app --restart unless-stopped cosmic-vedic-analyzer
+
+# Check if it's running
+docker ps
+curl http://localhost:8989
+
+# 2. Install Nginx reverse proxy
+sudo apt install nginx
+
+# 3. Configure subdomain (e.g., cosmic.yourdomain.com)
+sudo nano /etc/nginx/sites-available/cosmic-vedic
+```
+
+**Nginx Configuration:**
+```nginx
+server {
+    listen 80;
+    server_name cosmic.yourdomain.com;
+    
+    location / {
+        proxy_pass http://localhost:8989;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+```bash
+# 4. Enable site and restart Nginx
+sudo ln -s /etc/nginx/sites-available/cosmic-vedic /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+
+# 5. Update Docker container with restart policy
+docker stop cosmic-vedic-app
+docker rm cosmic-vedic-app
+docker run -d -p 8989:8989 --name cosmic-vedic-app --restart unless-stopped cosmic-vedic-analyzer
+
+# Check if everything is running
+docker ps
+curl http://localhost:8989
+
+# 6. Optional: Add SSL with Certbot
+sudo certbot --nginx -d cosmic.yourdomain.com
+```
+
+**DNS Setup:** Add A record in your domain provider:
+```
+Type: A
+Name: cosmic (or your preferred subdomain)
+Value: 147.79.101.193
+TTL: 300
+```
+
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contribution Guidelines](CONTRIBUTING.md) for details.
